@@ -33,6 +33,13 @@
             release-after-ms = <1000>;
             quick-release;
         };
+
+        td_lgui_sym: td_lgui_sym {
+            compatible = "zmk,behavior-tap-dance";
+            label = "TD_LGUI_SYM";
+            #binding-cells = <0>;
+            bindings = <&lt 1 LEFT_GUI>;
+        };
     };
 };
 
@@ -51,11 +58,11 @@
         backspace {
             bindings = <&kp BACKSPACE>;
             key-positions = <7 8>;
-            layers = <0 1 2 3 4 5>;
+            layers = <0 1 2 3 6 4>;
         };
 
-        right_ctrl {
-            bindings = <&kp RCTRL>;
+        right_shift {
+            bindings = <&kp RIGHT_SHIFT>;
             key-positions = <27 28>;
             layers = <0>;
         };
@@ -66,8 +73,8 @@
             layers = <0>;
         };
 
-        left_alt {
-            bindings = <&kp LEFT_ALT>;
+        left_ctrl {
+            bindings = <&kp LCTRL>;
             key-positions = <21 22>;
             layers = <0>;
         };
@@ -85,6 +92,36 @@
         };
     };
 
+    macros {
+        up_top_macro: gg_macro {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp G &kp G>;
+            label = "GG_MACRO";
+        };
+
+        down_low_macro: shift_g_macro {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LS(G)>;
+            label = "SHIFT_G_MACRO";
+        };
+
+        half_page_dwn_macro: half_page_dwn_macro {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LC(D)>;
+            label = "HALF_PAGE_DWN_MACRO";
+        };
+
+        half_up_pag_macro: half_up_pag_macro {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LS(B)>;
+            label = "HALF_UP_PAG_MACRO";
+        };
+    };
+
     keymap {
         compatible = "zmk,keymap";
 
@@ -96,10 +133,10 @@
             //                   |-SYM-| SPC | | RET |-NUM-|
 
             bindings = <
-&kp Q  &kp W  &kp F  &kp P    &kp B        &kp J    &kp L    &kp U      &kp Y    &none
-&kp A  &kp R  &kp S  &kp T    &kp G        &kp M    &kp N    &kp E      &kp I    &kp O
-&kp Z  &kp X  &kp C  &kp D    &kp V        &kp K    &kp H    &kp COMMA  &kp DOT  &mo FUN
-                     &mo SYM  &kp SPACE    &kp RET  &mo NUM
+&kp Q  &kp W  &kp F  &kp P         &kp B        &kp J    &kp L  &kp U      &kp Y    &none
+&kp A  &kp R  &kp S  &kp T         &kp G        &kp M    &kp N  &kp E      &kp I    &lt 3 O
+&kp Z  &kp X  &kp C  &kp D         &kp V        &kp K    &kp H  &kp COMMA  &kp DOT  &mo 6
+                     &td_lgui_sym  &kp SPACE    &kp RET  &mo 2
             >;
         };
 
@@ -113,7 +150,7 @@
             bindings = <
 &none     &kp BSLH   &kp PRCNT  &kp DLLR   &none        &none    &kp CARET  &kp LBRC  &kp RBRC  &none
 &kp STAR  &kp LPAR   &kp RPAR   &kp COLON  &none        &none    &kp DQT    &kp LBKT  &kp RBKT  &kp SEMI
-&mo FUN   &kp GRAVE  &kp AT     &kp AMPS   &none        &none    &kp HASH   &kp LT    &kp GT    &kp DEL
+&mo 6     &kp GRAVE  &kp AT     &kp AMPS   &none        &none    &kp HASH   &kp LT    &kp GT    &kp DEL
                                 &trans     &kp SPACE    &kp RET  &kp ESC
             >;
         };
@@ -127,7 +164,7 @@
 
             bindings = <
 &kp BSPC   &kp N4  &kp N5  &kp N6  &none        &none    &kp PIPE  &kp MINUS  &kp FSLH   &none
-&kp DOT    &kp N1  &kp N2  &kp N3  &none        &none    &kp SQT   &kp UNDER  &kp EQUAL  &mo NAV
+&kp DOT    &kp N1  &kp N2  &kp N3  &none        &none    &kp SQT   &kp UNDER  &kp EQUAL  &none
 &kp TILDE  &kp N7  &kp N8  &kp N9  &none        &none    &kp PLUS  &kp QMARK  &kp EXCL   &none
                            &kp N0  &kp SPACE    &kp RET  &trans
             >;
@@ -141,10 +178,10 @@
             //                   |     | SPC | | RET |_NUM_|
 
             bindings = <
-&none  &none  &none  &none  &none     &none     &none      &none      &none      &none
-&none  &none  &none  &none  &none     &kp LEFT  &kp DOWN   &kp UP     &kp RIGHT  &trans
-&none  &none  &none  &none  &none     &kp HOME  &kp PG_DN  &kp PG_UP  &kp END    &none
-                     &none  &trans    &trans    &trans
+&none           &none           &none         &none            &none     &none          &none               &none                 &none            &none
+&kp LEFT_ARROW  &kp DOWN_ARROW  &kp UP_ARROW  &kp RIGHT_ARROW  &none     &up_top_macro  &half_up_pag_macro  &half_page_dwn_macro  &down_low_macro  &trans
+&none           &none           &none         &none            &none     &kp HOME       &kp PG_DN           &kp PG_UP             &kp END          &none
+                                              &none            &trans    &trans         &trans
             >;
         };
 
@@ -158,7 +195,7 @@
             bindings = <
 &none     &kp F6  &kp F5  &kp F4  &kp F10    &none         &none         &none         &none         &none
 &kp CAPS  &kp F3  &kp F2  &kp F1  &kp F11    &bt BT_SEL 2  &kp K_MUTE    &kp C_VOL_DN  &kp C_VOL_UP  &none
-&mo DAN   &kp F9  &kp F8  &kp F7  &kp F12    &bt BT_SEL 0  &bt BT_SEL 1  &kp C_BRI_DN  &kp C_BRI_UP  &trans
+&mo 4     &kp F9  &kp F8  &kp F7  &kp F12    &bt BT_SEL 0  &bt BT_SEL 1  &kp C_BRI_DN  &kp C_BRI_UP  &trans
                           &none   &trans     &trans        &none
             >;
         };
