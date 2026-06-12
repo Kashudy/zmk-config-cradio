@@ -185,7 +185,7 @@
             //                   |     | SPC | | RET |_NUM_|
 
             bindings = <
-&none           &none           &none         &none            &none     &none     &none          &none               &none                 &trans
+&none           &none           &none         &none            &none     &none     &none          &none               &none                 &tog 0
 &kp LEFT_ARROW  &kp DOWN_ARROW  &kp UP_ARROW  &kp RIGHT_ARROW  &none     &none     &up_top_macro  &half_up_pag_macro  &half_page_dwn_macro  &down_low_macro
 &none           &none           &none         &none            &none     &kp HOME  &kp PG_DN      &kp PG_UP           &kp END               &none
                                               &trans           &trans    &trans    &trans
