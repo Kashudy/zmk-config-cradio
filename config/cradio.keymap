@@ -43,6 +43,16 @@
             #binding-cells = <0>;
             bindings = <&lt 2 ESC>;
         };
+
+        lay_hold_tap: lay_hold_tap {
+            compatible = "zmk,behavior-hold-tap";
+            label = "LAY_HOLD_TAP";
+            bindings = <&mo>, <&tog>;
+
+            #binding-cells = <2>;
+            tapping-term-ms = <200>;
+            hold-while-undecided;
+        };
     };
 };
 
@@ -100,21 +110,21 @@
         down_low_macro: shift_g_macro {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&kp ESC &kp LEFT_CONTROL &kp G>;
+            bindings = <&kp ESC &kp LC(G)>;
             label = "SHIFT_G_MACRO";
         };
 
         half_page_dwn_macro: half_page_dwn_macro {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&kp ESC &kp LEFT_CONTROL &kp D>;
+            bindings = <&kp ESC &kp LC(D)>;
             label = "HALF_PAGE_DWN_MACRO";
         };
 
         half_up_pag_macro: half_up_pag_macro {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&kp ESC &kp LEFT_CONTROL &kp B>;
+            bindings = <&kp ESC &kp LC(B)>;
             label = "HALF_UP_PAG_MACRO";
         };
     };
@@ -130,7 +140,7 @@
             //                   |-SYM-| SPC | | RET |-NUM-|
 
             bindings = <
-&kp Q  &kp W  &kp F  &kp P         &kp B        &kp J    &kp L        &kp U      &kp Y    &tog 3
+&kp Q  &kp W  &kp F  &kp P         &kp B        &kp J    &kp L        &kp U      &kp Y    &lay_hold_tap 3 3
 &kp A  &kp R  &kp S  &kp T         &kp G        &kp M    &kp N        &kp E      &kp I    &kp O
 &kp Z  &kp X  &kp C  &kp D         &kp V        &kp K    &kp H        &kp COMMA  &kp DOT  &mo 4
                      &td_lgui_sym  &kp SPACE    &kp RET  &td_esc_num
@@ -175,10 +185,10 @@
             //                   |     | SPC | | RET |_NUM_|
 
             bindings = <
-&none           &none           &none         &none            &none     &none          &none               &none                 &none            &trans
-&kp LEFT_ARROW  &kp DOWN_ARROW  &kp UP_ARROW  &kp RIGHT_ARROW  &none     &up_top_macro  &half_up_pag_macro  &half_page_dwn_macro  &down_low_macro  &none
-&none           &none           &none         &none            &none     &kp HOME       &kp PG_DN           &kp PG_UP             &kp END          &none
-                                              &trans           &trans    &trans         &trans
+&none           &none           &none         &none            &none     &none     &none          &none               &none                 &trans
+&kp LEFT_ARROW  &kp DOWN_ARROW  &kp UP_ARROW  &kp RIGHT_ARROW  &none     &none     &up_top_macro  &half_up_pag_macro  &half_page_dwn_macro  &down_low_macro
+&none           &none           &none         &none            &none     &kp HOME  &kp PG_DN      &kp PG_UP           &kp END               &none
+                                              &trans           &trans    &trans    &trans
             >;
         };
 
