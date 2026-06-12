@@ -110,7 +110,7 @@
         down_low_macro: shift_g_macro {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&kp ESC &kp LC(G)>;
+            bindings = <&kp ESC &kp LS(G)>;
             label = "SHIFT_G_MACRO";
         };
 
