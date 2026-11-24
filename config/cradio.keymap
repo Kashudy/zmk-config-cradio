@@ -19,6 +19,10 @@
 
 &caps_word { continue-list = <UNDERSCORE MINUS BACKSPACE>; };
 
+// layer-tap: layer activates if another key is pressed AND released while the thumb is held,
+// so fast "thumb + key" gives the symbol/number instead of ESC/GUI + letter
+&lt { flavor = "balanced"; };
+
 / {
     behaviors {
         skq: sticky_key_quick_release {
@@ -28,20 +32,6 @@
             bindings = <&kp>;
             release-after-ms = <1000>;
             quick-release;
-        };
-
-        td_lgui_sym: td_lgui_sym {
-            compatible = "zmk,behavior-tap-dance";
-            label = "TD_LGUI_SYM";
-            #binding-cells = <0>;
-            bindings = <&lt 1 LEFT_GUI>;
-        };
-
-        td_esc_num: td_esc_num {
-            compatible = "zmk,behavior-tap-dance";
-            label = "TD_ESC_NUM";
-            #binding-cells = <0>;
-            bindings = <&lt 2 ESC>;
         };
 
         lay_hold_tap: lay_hold_tap {
@@ -71,7 +61,10 @@
         backspace {
             bindings = <&kp BACKSPACE>;
             key-positions = <7 8>;
-            layers = <0 1 2 3 6 4>;
+            // not on SYM (those keys are { }) or the lock layer
+            layers = <0 2 3 4>;
+            // can't fire mid-word ("buy", "guy")
+            require-prior-idle-ms = <100>;
         };
 
         right_shift {
@@ -84,12 +77,16 @@
             bindings = <&caps_word>;
             key-positions = <15 14>;
             layers = <0>;
+            // can't fire mid-word ("segment", "pragmatic")
+            require-prior-idle-ms = <150>;
         };
 
         left_ctrl {
             bindings = <&skq LCTRL>;
             key-positions = <21 22>;
             layers = <0>;
+            // can't fire mid-word ("except", "exclude")
+            require-prior-idle-ms = <150>;
         };
 
         tab {
@@ -99,10 +96,13 @@
         };
     };
 
+    // wait-ms 60: gap after ESC must exceed nvim's ttimeoutlen (50 ms),
+    // otherwise ESC + key gets read as Alt + key
     macros {
         up_top_macro: gg_macro {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
+            wait-ms = <60>;
             bindings = <&kp ESC &kp G &kp G>;
             label = "GG_MACRO";
         };
@@ -110,6 +110,7 @@
         down_low_macro: shift_g_macro {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
+            wait-ms = <60>;
             bindings = <&kp ESC &kp LS(G)>;
             label = "SHIFT_G_MACRO";
         };
@@ -117,6 +118,7 @@
         half_page_dwn_macro: half_page_dwn_macro {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
+            wait-ms = <60>;
             bindings = <&kp ESC &kp LC(D)>;
             label = "HALF_PAGE_DWN_MACRO";
         };
@@ -124,7 +126,9 @@
         half_up_pag_macro: half_up_pag_macro {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&kp ESC &kp LC(B)>;
+            wait-ms = <60>;
+            // Ctrl-U = half page up (Ctrl-B was a full page)
+            bindings = <&kp ESC &kp LC(U)>;
             label = "HALF_UP_PAG_MACRO";
         };
     };
@@ -143,7 +147,7 @@
 &kp Q  &kp W  &kp F  &kp P         &kp B        &kp J    &kp L        &kp U      &kp Y    &lay_hold_tap 3 3
 &kp A  &kp R  &kp S  &kp T         &kp G        &kp M    &kp N        &kp E      &kp I    &kp O
 &kp Z  &kp X  &kp C  &kp D         &kp V        &kp K    &kp H        &kp COMMA  &kp DOT  &mo 4
-                     &td_lgui_sym  &kp SPACE    &kp RET  &td_esc_num
+                     &lt SYM LEFT_GUI  &kp SPACE    &kp RET  &lt NUM ESC
             >;
         };
 
